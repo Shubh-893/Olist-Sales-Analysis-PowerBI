@@ -115,8 +115,8 @@ Product, ranking, and operational measures used in the report.
 ### Page 4 - Business Insights & Action Center
 ![Business Insights & Action Center](page-4.png)
 
-### Page 5 - Executive Summary
-![Executive Summary](page-5.png)
+### Page 5 - Summary
+![Summary](page-5.png)
 
 ### Page 6 - DAX Measures Appendix Part 1
 ![DAX Measures Appendix Part 1](page-6.png)
