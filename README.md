@@ -1,146 +1,295 @@
-# Olist Sales Analysis Dashboard
+# 📊 Olist Sales Analysis Dashboard
 
-A professional Power BI business intelligence project built on the Olist e-commerce dataset.  
-This dashboard presents sales performance, product analysis, customer analytics, operational risk indicators, and DAX-based technical documentation in a case-study format.
+<p align="center">
 
----
+![Power BI](https://img.shields.io/badge/Power%20BI-Business%20Intelligence-F2C811?logo=powerbi&logoColor=black)
+![DAX](https://img.shields.io/badge/DAX-Advanced-blue)
+![Power Query](https://img.shields.io/badge/Power%20Query-ETL-success)
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-## Project Summary
-
-This project was built to analyze Olist's sales data through an interactive Power BI dashboard.  
-The report combines business metrics, product performance, customer behavior, delivery issues, and DAX measures to create a complete analytics story.
-
----
-
-## Tools Used
-
-- Power BI Desktop
-- DAX (Data Analysis Expressions)
-- Power Query
-- Data Modeling
-- Data Visualization
-- Business Intelligence
+</p>
 
 ---
 
-## Dashboard Highlights
+## 📌 Project Overview
+
+This project presents a **Business Intelligence case study** built using the **Olist Brazilian E-commerce Dataset**.
+
+The dashboard transforms raw sales data into actionable insights through interactive visualizations, KPI tracking, customer analytics, product performance analysis, and operational monitoring.
+
+The objective is to demonstrate practical **Power BI**, **DAX**, **Power Query**, and **Business Intelligence** skills by solving real-world business problems.
+
+---
+
+# 📑 Table of Contents
+
+- Project Overview
+- Business Objectives
+- Tech Stack
+- Dashboard Features
+- Business Insights
+- DAX Measures
+- Dashboard Pages
+- Repository Structure
+- Dashboard Preview
+- Skills Demonstrated
+- Author
+
+---
+
+# 🎯 Business Objectives
+
+✔ Monitor overall business performance
+
+✔ Analyze monthly revenue trends
+
+✔ Identify top-performing products
+
+✔ Understand customer purchasing behavior
+
+✔ Detect operational delivery issues
+
+✔ Measure customer retention
+
+✔ Build an executive-level dashboard
+
+---
+
+# 🛠 Tech Stack
+
+| Tool | Purpose |
+|-------|----------|
+| 📊 Power BI Desktop | Dashboard Development |
+| ⚡ DAX | Business Calculations |
+| 🔄 Power Query | Data Cleaning & Transformation |
+| 🗂 Data Modeling | Relationships & Star Schema |
+| 📈 Data Visualization | Interactive Reports |
+| 💼 Business Intelligence | Decision Support |
+
+---
+
+# ✨ Dashboard Highlights
+
+### 📈 Sales KPIs
 
 - Total Revenue
 - Total Orders
 - Total Customers
 - Average Order Value
-- Average Rating
-- Revenue by Month
-- Revenue by Product Category
-- Top Selling Product
+- Average Customer Rating
+
+---
+
+### 📦 Product Analytics
+
+- Revenue by Category
+- Top Selling Products
+- Bottom Performing Products
+- Product Ratings
+- Revenue Contribution
+
+---
+
+### 👥 Customer Analytics
+
 - New vs Repeat Customers
+- Customer Distribution
+- City-wise Analysis
+- State-wise Analysis
+
+---
+
+### 🚚 Operational Analytics
+
 - Not Delivered Orders
+- Delivery Risk Analysis
 - States at Risk
-- Business Insights and Action Center
+- Operational Performance
+
+---
+
+### 💡 Executive Insights
+
+- Action Center
+- Business Recommendations
 - Executive Summary
-- DAX Measures Appendix
 
 ---
 
-## Key Business Insights
+# 📊 Key Business Insights
 
-- Revenue is analyzed across months, categories, and product performance.
-- Health & Beauty is one of the strongest revenue categories.
-- Repeat customers are a small part of the customer base, showing retention opportunities.
-- Delivery performance highlights operational bottlenecks.
-- Top and bottom product analysis helps identify growth and risk areas.
-- DAX measures are documented separately to show technical depth and clean modeling.
+✅ Health & Beauty generates one of the highest revenues.
+
+✅ Customer retention remains relatively low, indicating opportunities to improve repeat purchases.
+
+✅ Delivery delays are concentrated in selected states.
+
+✅ Revenue distribution is highly uneven across product categories.
+
+✅ Top-selling products contribute a significant share of overall sales.
+
+✅ DAX documentation demonstrates advanced analytical modeling.
 
 ---
 
-## DAX Measures Included
+# 🧮 DAX Measures
+
+<details>
+
+<summary>Click to View All Measures</summary>
+
+### Revenue
 
 - Total Revenue
-- Total Orders
-- Total Customers
 - Average Order Value
-- Average Rating
 - Average Revenue per Product
-- Health Beauty Revenue
-- Health Beauty Revenue %
+
+### Customer
+
+- Total Customers
 - New Customers
 - Repeat Customers
-- Not Delivered Orders
-- Not Delivered Rate %
+
+### Product
+
 - Top Selling Product
 - Top 3 Products
-- Top 5 Products Revenue %
 - Low Rated Products
-- States at Risk
 - Total Categories
 
----
+### Operational
 
-## Dashboard Pages
+- Not Delivered Orders
+- Not Delivered Rate %
+- States at Risk
 
-### Page 1: Sales Dashboard
-Revenue KPIs, monthly trend, order status, category revenue, and state filters.
+### Category
 
-### Page 2: Product & Category Performance
-Top-selling products, category analysis, rating analysis, and monthly order trends.
+- Health Beauty Revenue
+- Health Beauty Revenue %
 
-### Page 3: Customer Analytics
-Customer distribution by state and city, plus new vs repeat customer analysis.
+### Overall
 
-### Page 4: Business Insights & Action Center
-Top and bottom revenue products, delivery risk, and actionable business insights.
+- Total Orders
+- Average Rating
 
-### Page 5: Executive Summary
-A case-study style summary explaining project value and key findings.
-
-### Page 6: DAX Measures Appendix - Part 1
-Revenue and customer measures used in the report.
-
-### Page 7: DAX Measures Appendix - Part 2
-Product, ranking, and operational measures used in the report.
+</details>
 
 ---
 
-## Dashboard Preview
+# 📄 Dashboard Pages
 
-### Page 1 - Sales Dashboard
+| Page | Description |
+|------|-------------|
+| 📊 Page 1 | Sales Dashboard |
+| 📦 Page 2 | Product & Category Performance |
+| 👥 Page 3 | Customer Analytics |
+| 💡 Page 4 | Business Insights & Action Center |
+| 📑 Page 5 | Executive Summary |
+| 🧮 Page 6 | DAX Measures Appendix (Part 1) |
+| 🧮 Page 7 | DAX Measures Appendix (Part 2) |
+
+---
+
+# 🖼 Dashboard Preview
+
+---
+
+## 📊 Sales Dashboard
+
 ![Sales Dashboard](page-1.png)
 
-### Page 2 - Product & Category Performance
-![Product & Category Performance](page-2.png)
+---
 
-### Page 3 - Customer Analytics
-![Customer Analytics](page-3.png)
+## 📦 Product & Category Performance
 
-### Page 4 - Business Insights & Action Center
-![Business Insights & Action Center](page-4.png)
+![Product Dashboard](page-2.png)
 
-### Page 5 - Summary
+---
+
+## 👥 Customer Analytics
+
+![Customer Dashboard](page-3.png)
+
+---
+
+## 💡 Business Insights & Action Center
+
+![Business Insights](page-4.png)
+
+---
+
+## 📑 Executive Summary
+
 ![Summary](page-5.png)
 
-### Page 6 - DAX Measures Appendix Part 1
-![DAX Measures Appendix Part 1](page-6.png)
+---
 
-### Page 7 - DAX Measures Appendix Part 2
-![DAX Measures Appendix Part 2](page-7.png)
+## 🧮 DAX Measures Appendix (Part 1)
+
+![DAX 1](page-6.png)
 
 ---
 
-## Files in This Repository
+## 🧮 DAX Measures Appendix (Part 2)
 
-- `PowerBI_project.pdf`
-- `page-1.png`
-- `page-2.png`
-- `page-3.png`
-- `page-4.png`
-- `page-5.png`
-- `page-6.png`
-- `page-7.png`
+![DAX 2](page-7.png)
 
 ---
 
-## Author
+# 📂 Repository Structure
 
-**Shubham Kamal**  
-B.Tech, Ceramic Engineering  
-IIT (BHU) Varanasi
+```
+📦 Olist-Sales-Dashboard
+
+│
+├── PowerBI_project.pdf
+├── page-1.png
+├── page-2.png
+├── page-3.png
+├── page-4.png
+├── page-5.png
+├── page-6.png
+├── page-7.png
+├── README.md
+│
+└── Assets
+```
+
+---
+
+# 🚀 Skills Demonstrated
+
+✔ Business Intelligence
+
+✔ Dashboard Design
+
+✔ Data Cleaning
+
+✔ Data Modeling
+
+✔ Power Query
+
+✔ DAX
+
+✔ KPI Development
+
+✔ Data Visualization
+
+✔ Business Storytelling
+
+✔ Executive Reporting
+
+---
+
+# 👨‍💻 Author
+
+### **Shubham Kamal**
+
+🎓 B.Tech, Ceramic Engineering
+
+🏛 IIT (BHU) Varanasi
+
+⭐ If you found this project useful, don't forget to **Star ⭐ the repository!**
+
