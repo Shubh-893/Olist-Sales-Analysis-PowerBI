@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olist Sales Analysis — Power BI Case Study by Shubham Kamal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0E13;
+    --panel:#12161F;
+    --panel-2:#171D29;
+    --border:#232B3A;
+    --text:#E7EAEE;
+    --muted:#8992A3;
+    --muted-2:#5C6577;
+    --teal:#2FD9B0;
+    --coral:#F0724A;
+    --amber:#F4BD53;
+    --blue:#5B8DEF;
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--teal); color:#0B0E13; }
+
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- Background grid texture ---------- */
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* ---------- Top ribbon nav ---------- */
+  .ribbon{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,14,19,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .ribbon-inner{
+    max-width:1180px; margin:0 auto; padding:0 32px;
+    display:flex; align-items:center; gap:28px;
+    height:56px;
+  }
+  .ribbon-brand{
+    display:flex; align-items:center; gap:9px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600; font-size:14px;
+    color:var(--text);
+    white-space:nowrap;
+  }
+  .ribbon-dot{ width:9px; height:9px; border-radius:2px; background:var(--teal); flex-shrink:0; }
+  .ribbon-tabs{
+    display:flex; gap:2px;
+    font-size:13px; color:var(--muted);
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .ribbon-tabs::-webkit-scrollbar{ display:none; }
+  .ribbon-tabs a{
+    padding:8px 14px;
+    border-radius:6px;
+    white-space:nowrap;
+    transition: background .15s, color .15s;
+  }
+  .ribbon-tabs a:hover{ background:var(--panel-2); color:var(--text); }
+  .ribbon-cta{
+    margin-left:auto;
+    display:flex; gap:10px;
+    flex-shrink:0;
+  }
+  .btn{
+    font-size:13px; font-weight:500;
+    padding:8px 16px;
+    border-radius:6px;
+    border:1px solid var(--border);
+    white-space:nowrap;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+  .btn:hover{ border-color:var(--teal); transform:translateY(-1px); }
+  .btn-solid{
+    background:var(--teal);
+    color:#08110D;
+    border-color:var(--teal);
+    font-weight:600;
+  }
+  .btn-solid:hover{ background:#3FE8BE; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:90px 0 60px;
+  }
+  .formula-bar{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px; color:var(--muted);
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:7px 14px;
+    margin-bottom:28px;
+  }
+  .formula-bar .fx{ color:var(--teal); font-weight:700; }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{
+    content:''; width:16px; height:1px; background:var(--muted-2);
+  }
+  h1.hero-title{
+    font-size:clamp(32px, 4.6vw, 52px);
+    line-height:1.08;
+    margin-bottom:20px;
+  }
+  h1.hero-title .accent{ color:var(--teal); }
+  .hero-sub{
+    font-size:16.5px;
+    color:var(--muted);
+    max-width:520px;
+    margin-bottom:30px;
+  }
+  .hero-actions{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:34px; }
+  .hero-actions .btn{ padding:11px 22px; font-size:14px; }
+
+  .stack-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    border:1px solid var(--border);
+    padding:5px 10px;
+    border-radius:5px;
+    background:var(--panel);
+  }
+
+  /* mini KPI preview card in hero */
+  .kpi-preview{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .kpi-preview::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--teal), var(--blue), var(--amber), var(--coral));
+  }
+  .kpi-preview-head{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:16px;
+  }
+  .kpi-preview-head span{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted-2);
+  }
+  .kpi-preview-head .live{
+    display:flex; align-items:center; gap:6px;
+    font-size:10.5px; color:var(--teal);
+  }
+  .live-dot{
+    width:6px; height:6px; border-radius:50%; background:var(--teal);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+  .kpi-mini-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  }
+  .kpi-mini{
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:13px 14px;
+    background:var(--panel-2);
+  }
+  .kpi-mini .lbl{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .kpi-mini .val{ font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:600; }
+  .kpi-mini .val.teal{ color:var(--teal); }
+  .kpi-mini .val.amber{ color:var(--amber); }
+  .kpi-mini .val.coral{ color:var(--coral); }
+  .kpi-mini .val.blue{ color:var(--blue); }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:76px 0; }
+  .section-head{ margin-bottom:44px; max-width:640px; }
+  .section-head h2{ font-size:clamp(24px,3vw,32px); margin-bottom:12px; }
+  .section-head p{ color:var(--muted); font-size:15px; }
+  .divider{
+    height:1px;
+    background:linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ---------- Screenshot frame (monitor bezel) ---------- */
+  .frame{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,0.6);
+  }
+  .frame-bar{
+    display:flex; align-items:center; gap:6px;
+    padding:6px 8px 12px;
+  }
+  .frame-bar .d{ width:9px; height:9px; border-radius:50%; background:var(--border); }
+  .frame-bar .d:nth-child(1){ background:#4a3234; }
+  .frame-bar .d:nth-child(2){ background:#4a4432; }
+  .frame-bar .d:nth-child(3){ background:#324a3a; }
+  .frame img{ border-radius:6px; width:100%; border:1px solid var(--border); }
+
+  /* ---------- Tools strip ---------- */
+  .tools-strip{
+    display:flex; flex-wrap:wrap; gap:10px 14px;
+    padding:22px 0;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .tools-strip .item{
+    font-size:13px; color:var(--muted);
+    display:flex; align-items:center; gap:8px;
+  }
+  .tools-strip .item::before{
+    content:''; width:5px; height:5px; background:var(--teal); border-radius:50%;
+  }
+
+  /* ---------- Page walkthrough rows ---------- */
+  .page-row{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:52px;
+    align-items:center;
+    padding:56px 0;
+  }
+  .page-row.reverse{ direction:rtl; }
+  .page-row.reverse > *{ direction:ltr; }
+  .page-row + .page-row{ border-top:1px solid var(--border); }
+  .page-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; color:var(--muted-2);
+    margin-bottom:10px;
+  }
+  .page-row h3{ font-size:22px; margin-bottom:12px; }
+  .page-row p{ color:var(--muted); font-size:14.5px; margin-bottom:16px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-size:11px; font-family:'JetBrains Mono',monospace;
+    padding:4px 9px; border-radius:5px;
+    border:1px solid var(--border); color:var(--muted);
+  }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Insights cards ---------- */
+  .insight-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  .insight-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-left:3px solid var(--teal);
+    border-radius:8px;
+    padding:20px 20px 20px 18px;
+  }
+  .insight-card.warn{ border-left-color:var(--coral); }
+  .insight-card.info{ border-left-color:var(--blue); }
+  .insight-card.note{ border-left-color:var(--amber); }
+  .insight-card .k{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; color:var(--muted-2);
+    text-transform:uppercase; letter-spacing:0.05em;
+    margin-bottom:10px;
+  }
+  .insight-card p{ font-size:14px; color:var(--text); }
+
+  /* ---------- DAX appendix ---------- */
+  .dax-panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .dax-group-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; color:var(--muted-2);
+    text-transform:uppercase; letter-spacing:0.06em;
+    padding:14px 20px 8px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+    border-top:1px solid var(--border);
+  }
+  .dax-row{
+    display:flex; align-items:baseline; gap:14px;
+    padding:12px 20px;
+    border-bottom:1px solid var(--border);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    transition:background .15s;
+  }
+  .dax-row:hover{ background:var(--panel-2); }
+  .dax-row:last-child{ border-bottom:none; }
+  .dax-row .fx-lbl{ color:var(--teal); flex-shrink:0; }
+  .dax-row .name{ color:var(--text); }
+  .dax-row .desc{ color:var(--muted-2); margin-left:auto; font-size:11.5px; text-align:right; font-family:'Inter',sans-serif; }
+
+  /* ---------- Summary / exec ---------- */
+  .exec-panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:44px;
+  }
+  .exec-panel p{ color:var(--muted); font-size:15px; max-width:760px; }
+  .exec-panel p + p{ margin-top:14px; }
+  .exec-stat-row{
+    display:flex; gap:40px; margin-top:32px; flex-wrap:wrap;
+  }
+  .exec-stat .n{ font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; color:var(--teal); }
+  .exec-stat .l{ font-size:12px; color:var(--muted); margin-top:4px; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:60px 0 50px;
+    border-top:1px solid var(--border);
+  }
+  .footer-grid{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;
+  }
+  .footer-author h3{ font-size:20px; margin-bottom:6px; }
+  .footer-author p{ color:var(--muted); font-size:13.5px; }
+  .footer-links{ display:flex; gap:10px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:880px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .page-row, .page-row.reverse{ grid-template-columns:1fr; direction:ltr; }
+    .insight-grid{ grid-template-columns:1fr; }
+    .ribbon-tabs{ display:none; }
+    .exec-panel{ padding:26px; }
+    .dax-row{ flex-wrap:wrap; }
+    .dax-row .desc{ margin-left:0; text-align:left; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .reveal{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- Ribbon nav -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="ribbon-brand"><span class="ribbon-dot"></span> OLIST · SALES ANALYSIS</div>
+    <nav class="ribbon-tabs">
+      <a href="#overview">Overview</a>
+      <a href="#pages">Report Pages</a>
+      <a href="#insights">Insights</a>
+      <a href="#dax">DAX Appendix</a>
+      <a href="#about">Author</a>
+    </nav>
+    <div class="ribbon-cta">
+      <a class="btn" href="PowerBI_project.pdf" target="_blank">View PDF</a>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="overview">
+  <div class="wrap">
+    <div class="formula-bar"><span class="fx">fx</span> = REPORT("Olist Sales Analysis Dashboard", Author := "Shubham Kamal")</div>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Power BI Case Study</div>
+        <h1 class="hero-title">A dashboard built to <span class="accent">explain</span> the sale, not just report it.</h1>
+        <p class="hero-sub">An end-to-end Power BI project on Olist's e-commerce data — from revenue trends and product performance down to delivery risk and the DAX logic running underneath it. Seven pages, one story.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#pages">Walk through the report ↓</a>
+          <a class="btn" href="PowerBI_project.pdf" target="_blank">Open full PDF</a>
+        </div>
+        <div class="stack-chips">
+          <span class="chip">Power BI Desktop</span>
+          <span class="chip">DAX</span>
+          <span class="chip">Power Query</span>
+          <span class="chip">Data Modeling</span>
+          <span class="chip">Data Visualization</span>
+        </div>
+      </div>
+      <div class="kpi-preview reveal">
+        <div class="kpi-preview-head">
+          <span>SALES DASHBOARD · PAGE 1</span>
+          <span class="live"><span class="live-dot"></span>LIVE MEASURES</span>
+        </div>
+        <div class="kpi-mini-grid">
+          <div class="kpi-mini"><div class="lbl">Measure</div><div class="val teal">Total Revenue</div></div>
+          <div class="kpi-mini"><div class="lbl">Measure</div><div class="val blue">Total Orders</div></div>
+          <div class="kpi-mini"><div class="lbl">Measure</div><div class="val amber">Total Customers</div></div>
+          <div class="kpi-mini"><div class="lbl">Measure</div><div class="val coral">Avg Order Value</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- Tools strip -->
+<div class="wrap">
+  <div class="tools-strip reveal">
+    <span class="item">Power BI Desktop</span>
+    <span class="item">DAX (Data Analysis Expressions)</span>
+    <span class="item">Power Query</span>
+    <span class="item">Data Modeling</span>
+    <span class="item">Data Visualization</span>
+    <span class="item">Business Intelligence</span>
+  </div>
+</div>
+
+<!-- Report pages walkthrough -->
+<section id="pages">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Seven pages, one narrative</h2>
+      <p>The report moves from what happened, to why it happened, to what to do about it — ending with the technical documentation behind every number.</p>
+    </div>
+
+    <div class="page-row reveal">
+      <div>
+        <div class="page-num">PAGE 01</div>
+        <h3>Sales Dashboard</h3>
+        <p>Revenue KPIs, the monthly trend line, order status split, category-wise revenue, and state-level filters — the first read on how the business is doing.</p>
+        <div class="tag-row">
+          <span class="tag">Revenue KPIs</span><span class="tag">Monthly Trend</span><span class="tag">Order Status</span><span class="tag">State Filter</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-1.png" alt="Sales Dashboard page">
+      </div>
+    </div>
+
+    <div class="page-row reverse reveal">
+      <div>
+        <div class="page-num">PAGE 02</div>
+        <h3>Product &amp; Category Performance</h3>
+        <p>Top-selling products, category-level revenue breakdown, customer rating analysis, and how orders trend month over month.</p>
+        <div class="tag-row">
+          <span class="tag">Top Products</span><span class="tag">Category Revenue</span><span class="tag">Ratings</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-2.png" alt="Product and Category Performance page">
+      </div>
+    </div>
+
+    <div class="page-row reveal">
+      <div>
+        <div class="page-num">PAGE 03</div>
+        <h3>Customer Analytics</h3>
+        <p>Where customers actually are — by state and city — alongside the new-versus-repeat split that shows how much of the base comes back.</p>
+        <div class="tag-row">
+          <span class="tag">Geo Distribution</span><span class="tag">New vs Repeat</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-3.png" alt="Customer Analytics page">
+      </div>
+    </div>
+
+    <div class="page-row reverse reveal">
+      <div>
+        <div class="page-num">PAGE 04</div>
+        <h3>Business Insights &amp; Action Center</h3>
+        <p>Top and bottom revenue products side by side, delivery risk by state, and a set of plain-language actions worth taking next.</p>
+        <div class="tag-row">
+          <span class="tag">Top/Bottom Products</span><span class="tag">Delivery Risk</span><span class="tag">Action Items</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-4.png" alt="Business Insights and Action Center page">
+      </div>
+    </div>
+
+    <div class="page-row reveal">
+      <div>
+        <div class="page-num">PAGE 05</div>
+        <h3>Executive Summary</h3>
+        <p>A case-study style close: what the project set out to answer, what the data actually showed, and why it matters.</p>
+        <div class="tag-row">
+          <span class="tag">Case Study</span><span class="tag">Key Findings</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-5.png" alt="Executive Summary page">
+      </div>
+    </div>
+
+    <div class="page-row reverse reveal">
+      <div>
+        <div class="page-num">PAGE 06</div>
+        <h3>DAX Measures Appendix — Part 1</h3>
+        <p>Revenue and customer measures, documented in the open — the same logic driving every card on Page 1.</p>
+        <div class="tag-row">
+          <span class="tag">Revenue Measures</span><span class="tag">Customer Measures</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-6.png" alt="DAX Measures Appendix Part 1">
+      </div>
+    </div>
+
+    <div class="page-row reveal">
+      <div>
+        <div class="page-num">PAGE 07</div>
+        <h3>DAX Measures Appendix — Part 2</h3>
+        <p>Product, ranking, and operational measures — the mechanics behind top-seller and risk flags on the earlier pages.</p>
+        <div class="tag-row">
+          <span class="tag">Ranking Measures</span><span class="tag">Operational Measures</span>
+        </div>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span></div>
+        <img src="page-7.png" alt="DAX Measures Appendix Part 2">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Insights -->
+<section id="insights">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>What the data is saying</h2>
+      <p>Six read-outs that shaped the recommendations on the Action Center page.</p>
+    </div>
+    <div class="insight-grid">
+      <div class="insight-card reveal">
+        <div class="k">Revenue</div>
+        <p>Revenue is broken down across months, categories, and individual products to separate steady performers from one-off spikes.</p>
+      </div>
+      <div class="insight-card note reveal">
+        <div class="k">Category</div>
+        <p>Health &amp; Beauty stands out as one of the strongest revenue categories in the catalogue.</p>
+      </div>
+      <div class="insight-card warn reveal">
+        <div class="k">Retention</div>
+        <p>Repeat customers make up a small share of the base — a clear retention opportunity rather than an acquisition problem.</p>
+      </div>
+      <div class="insight-card warn reveal">
+        <div class="k">Delivery</div>
+        <p>Delivery performance surfaces real operational bottlenecks, tracked here by state and by order status.</p>
+      </div>
+      <div class="insight-card info reveal">
+        <div class="k">Products</div>
+        <p>Top and bottom product analysis flags both the growth areas and the ones quietly dragging on performance.</p>
+      </div>
+      <div class="insight-card reveal">
+        <div class="k">Documentation</div>
+        <p>Every DAX measure behind the report is documented separately, so the modeling is auditable, not a black box.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAX Appendix -->
+<section id="dax">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>DAX measures appendix</h2>
+      <p>The formula layer. Eighteen measures, grouped by what they explain.</p>
+    </div>
+    <div class="dax-panel reveal">
+      <div class="dax-group-label">Revenue &amp; Orders</div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Total Revenue</span><span class="desc">Sum of order revenue</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Total Orders</span><span class="desc">Distinct order count</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Average Order Value</span><span class="desc">Revenue ÷ orders</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Total Categories</span><span class="desc">Distinct product categories</span></div>
+
+      <div class="dax-group-label">Customers</div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Total Customers</span><span class="desc">Distinct customer count</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">New Customers</span><span class="desc">First-order customers</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Repeat Customers</span><span class="desc">Customers with 2+ orders</span></div>
+
+      <div class="dax-group-label">Products &amp; Ranking</div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Average Revenue per Product</span><span class="desc">Revenue ÷ product count</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Health Beauty Revenue</span><span class="desc">Category-filtered revenue</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Health Beauty Revenue %</span><span class="desc">Share of total revenue</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Top Selling Product</span><span class="desc">Highest-revenue product</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Top 3 Products</span><span class="desc">Top-ranked product set</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Top 5 Products Revenue %</span><span class="desc">Share held by top 5</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Low Rated Products</span><span class="desc">Below-threshold ratings</span></div>
+
+      <div class="dax-group-label">Operations &amp; Risk</div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Average Rating</span><span class="desc">Mean customer review score</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Not Delivered Orders</span><span class="desc">Orders outside "delivered" status</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">Not Delivered Rate %</span><span class="desc">Share of orders not delivered</span></div>
+      <div class="dax-row"><span class="fx-lbl">fx</span><span class="name">States at Risk</span><span class="desc">States above delivery-risk threshold</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Executive summary -->
+<section id="summary">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Executive summary</h2>
+      <p>The case-study close — why this report exists and what it's for.</p>
+    </div>
+    <div class="exec-panel reveal">
+      <p>This project turns Olist's raw e-commerce data into a working sales analysis dashboard — covering revenue, product performance, customer behavior, and delivery risk in one connected report.</p>
+      <p>Beyond the visuals, every measure is documented on its own appendix pages, so the modeling choices are visible and reviewable rather than hidden inside the file.</p>
+      <div class="exec-stat-row">
+        <div class="exec-stat"><div class="n">7</div><div class="l">Report pages</div></div>
+        <div class="exec-stat"><div class="n">18</div><div class="l">DAX measures</div></div>
+        <div class="exec-stat"><div class="n">4</div><div class="l">Analysis areas</div></div>
+        <div class="exec-stat"><div class="n">1</div><div class="l">Data source, fully modeled</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="about">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-author">
+        <div class="eyebrow">Author</div>
+        <h3>Shubham Kamal</h3>
+        <p>B.Tech, Ceramic Engineering — IIT (BHU) Varanasi</p>
+      </div>
+      <div class="footer-links">
+        <a class="btn" href="PowerBI_project.pdf" target="_blank">View PDF</a>
+        <a class="btn btn-solid" href="#overview">Back to top ↑</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+</script>
+</body>
+</html>
